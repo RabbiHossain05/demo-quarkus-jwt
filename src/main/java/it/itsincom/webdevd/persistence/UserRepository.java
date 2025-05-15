@@ -8,10 +8,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class UserRepository implements PanacheRepositoryBase<ApplicationUser, Long> {
+
     public ApplicationUser authenticate(String username, String password) {
         ApplicationUser applicationUser = findByUsername(username);
         if (applicationUser != null) {
             boolean matches = BcryptUtil.matches(password, applicationUser.getPassword());
+            System.out.println("password: " + password);
+            System.out.println("applicationUserPW: " + applicationUser.getPassword());
+            System.out.println("matches: " + matches);
             if (matches) {
                 return applicationUser;
             } else {
@@ -22,11 +26,10 @@ public class UserRepository implements PanacheRepositoryBase<ApplicationUser, Lo
     }
 
     public ApplicationUser findByUsername(String username) {
-        ApplicationUser applicationUser = find(
+        return find(
                 "SELECT u from ApplicationUser u where " +
                 "u.username = :username ",
                 Parameters.with("username", username)
         ).firstResult();
-        return applicationUser;
     }
 }

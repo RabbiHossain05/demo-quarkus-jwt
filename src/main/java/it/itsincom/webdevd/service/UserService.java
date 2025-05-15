@@ -1,6 +1,6 @@
 package it.itsincom.webdevd.service;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.panache.common.Sort;
 import it.itsincom.webdevd.persistence.UserRepository;
 import it.itsincom.webdevd.persistence.model.ApplicationUser;
@@ -23,14 +23,16 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(CreateUserRequest request) {
+        String hash = BcryptUtil.bcryptHash(request.getPassword());
         ApplicationUser user = new ApplicationUser(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getAddress(),
                 request.getUsername(),
-                request.getPassword(),
-                request.getRole()
+                hash,
+                request.getRole().toString()
         );
-
         userRepository.persist(user);
-
         return toUserResponse(user);
 
     }

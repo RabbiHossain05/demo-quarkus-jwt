@@ -61,9 +61,6 @@ public class AuthenticationResource {
         return Response.ok(new AccessTokenResponse(accessToken)).build();
     }
 
-
-
-
     private String getAccessToken(UserResponse user) {
         String token = Jwt
                 .issuer("demo-quarkus-jwt")

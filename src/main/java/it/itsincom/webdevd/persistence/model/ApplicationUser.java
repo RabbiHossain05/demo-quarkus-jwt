@@ -8,36 +8,46 @@ import io.quarkus.security.jpa.Username;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "application_user")
+@Table(name = "[User]")
 @UserDefinition
 public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "Id")
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "FirstName", nullable = false, length = 100)
+    private String firstName;
+
+    @Column(name = "LastName", nullable = false, length = 100)
+    private String lastName;
+
+    @Column(name = "Address", length = 255)
+    private String address;
+
+    @Column(name = "Username", unique = true, nullable = false, length = 50)
     @Username
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "Password", nullable = false, length = 255)
     @Password
     private String password;
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "Role", nullable = false, length = 10)
     @Roles
     private String role;
 
-    public ApplicationUser() {
-    }
-
-    public ApplicationUser(String username, String password, UserRole role) {
+    public ApplicationUser(String firstName, String lastName, String address, String username, String password, String role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
         this.username = username;
         this.password = BcryptUtil.bcryptHash(password);
-        this.role = role.name();
+        this.role = role;
     }
 
+    public ApplicationUser() {}
 
     public Long getId() {
         return id;
@@ -45,6 +55,30 @@ public class ApplicationUser {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getUsername() {
@@ -60,7 +94,7 @@ public class ApplicationUser {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = BcryptUtil.bcryptHash(password);
     }
 
     public String getRole() {
