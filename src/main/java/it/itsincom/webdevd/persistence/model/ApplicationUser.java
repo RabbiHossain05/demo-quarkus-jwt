@@ -1,6 +1,5 @@
 package it.itsincom.webdevd.persistence.model;
 
-import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.security.jpa.Password;
 import io.quarkus.security.jpa.Roles;
 import io.quarkus.security.jpa.UserDefinition;
@@ -30,20 +29,20 @@ public class ApplicationUser {
     @Username
     private String username;
 
-    @Column(name = "Password", nullable = false, length = 255)
+    @Column(name = "PasswordHash", nullable = false, length = 255)
     @Password
-    private String password;
+    private String passwordHash;
 
     @Column(name = "Role", nullable = false, length = 10)
     @Roles
     private String role;
 
-    public ApplicationUser(String firstName, String lastName, String address, String username, String password, String role) {
+    public ApplicationUser(String firstName, String lastName, String address, String username, String passwordHash, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.username = username;
-        this.password = BcryptUtil.bcryptHash(password);
+        this.passwordHash = passwordHash;
         this.role = role;
     }
 
@@ -89,12 +88,12 @@ public class ApplicationUser {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = BcryptUtil.bcryptHash(password);
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String getRole() {

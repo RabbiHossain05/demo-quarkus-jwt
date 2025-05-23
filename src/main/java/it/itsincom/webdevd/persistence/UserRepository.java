@@ -12,10 +12,7 @@ public class UserRepository implements PanacheRepositoryBase<ApplicationUser, Lo
     public ApplicationUser authenticate(String username, String password) {
         ApplicationUser applicationUser = findByUsername(username);
         if (applicationUser != null) {
-            boolean matches = BcryptUtil.matches(password, applicationUser.getPassword());
-            System.out.println("password: " + password);
-            System.out.println("applicationUserPW: " + applicationUser.getPassword());
-            System.out.println("matches: " + matches);
+            boolean matches = BcryptUtil.matches(password, applicationUser.getPasswordHash());
             if (matches) {
                 return applicationUser;
             } else {

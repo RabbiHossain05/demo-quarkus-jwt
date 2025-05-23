@@ -34,7 +34,6 @@ public class UserService {
         );
         userRepository.persist(user);
         return toUserResponse(user);
-
     }
 
     public UserResponse authenticate(String username, String password) {
